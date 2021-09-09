@@ -1,0 +1,1 @@
+/home/clayton/rust/rust-book/ch7/communicator/target/debug/communicator: /home/clayton/rust/rust-book/ch7/communicator/src/client.rs /home/clayton/rust/rust-book/ch7/communicator/src/lib.rs /home/clayton/rust/rust-book/ch7/communicator/src/main.rs /home/clayton/rust/rust-book/ch7/communicator/src/network/server.rs /home/clayton/rust/rust-book/ch7/communicator/src/network.rs
