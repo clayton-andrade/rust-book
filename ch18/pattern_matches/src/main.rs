@@ -1,0 +1,155 @@
+#![allow(dead_code)]
+
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+enum Color {
+    Rgb(i32, i32, i32),
+    Hsv(i32, i32, i32),
+}
+
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+    Change(Color),
+}
+
+enum Msg {
+    Hello { id: i32 },
+}
+
+fn main() {
+    let favorite_color: Option<&str> = None;
+    let is_tuesday = false;
+    let age: Result<u8, _> = "34".parse();
+    
+    if let Some(color) = favorite_color {
+        println!("Using your favorite color, {}, as the background", color);
+    } else if is_tuesday {
+        println!("Tuesday is green day!");
+    } else if let Ok(age) = age {
+        if age > 30 {
+            println!("Using purple as the background color");
+        } else {
+            println!("Using orange as the background color");
+        }
+    } else {
+        println!("Using blue as the background color");
+    }
+
+    let mut vec = vec![1, 2, 3, 4, 5];
+    while let Some(v) = vec.pop() {
+        println!("{}", v);
+    }
+
+    let vec = vec!['a', 'b', 'c'];
+    for (index, value) in vec.iter().enumerate() {
+        println!("{} is at index {}", value, index);
+    }
+
+    // let some_value: Option<i32> = None;
+    // let Some(x) = some_value;
+
+    println!();
+
+    let x = Some(5);
+    let y = 10;
+    match x {
+        Some(50) => println!("Got 50"),
+        Some(y) => println!("Matched, y = {:?}", y),
+        _ => println!("Default case, x = {:?}", x),
+    }
+    println!("at the end: x = {:?}, y = {:?}", x, y);
+
+    let x = 5;
+    match x {
+        1 | 2 => println!("Um ou dois"),
+        3..=9 => println!("Número maior que dois e menor que dez"),
+        _ => println!("Número maior ou igual a dez"),
+    }
+
+    let x = '?';
+    match x {
+        'a'..='d' => println!("Letra menor que a letra 'e'"),
+        'e'..='z' => println!("Letra maior que a letra 'd'"),
+        _ => println!("Outro caractere"),
+    }
+
+    let p = Point { x: 0, y: 7 };
+    // let Point { x: a, y: b } = p;
+    let Point { x, y } = p;
+    assert_eq!(x, 0);
+    assert_eq!(y, 7);
+
+    match p {
+        Point { x, y: 0 } => println!("On the x axis at {}", x),
+        Point { x: 0, y } => println!("On the y axis at {}", y),
+        Point { x, y } => println!("On neither axis: ({}, {})", x, y),
+    }
+
+    let msg = Message::Move { x: 10, y: 5 };
+    match msg {
+        Message::Quit => {
+            println!("The Quit variant has no data to destructure.");
+        },
+        Message::Move { x, y } => {
+            println!("Move in the x direction {} and in the y direction {}", x, y);
+        },
+        Message::Write(text) => {
+            println!("Text message: {}", text);
+        },
+        Message::ChangeColor(r, g, b) => {
+            println!("Change the color to red {}, green {}, and blue {}", r, g, b);
+        },
+        _ => println!("..."),
+    }
+
+    let msg = Message::Change(Color::Rgb(0, 120, 255));
+    match msg {
+        Message::Change(Color::Rgb(r, g, b)) => println!("Change the color to red {}, green {}, and blue {}", r, g, b),
+        Message::Change(Color::Hsv(h, s, v)) => println!("Change the color to hue {}, saturation {}, and value {}", h, s, v),
+        _ => (),
+    }
+
+    let mut setting_value = Some(5);
+    let new_setting_value = Some(10);
+    match (setting_value, new_setting_value) {
+        (Some(_), Some(_)) => println!("Can't overwrite an existing customized value"),
+        _ => {
+            setting_value = new_setting_value;
+        }
+    }
+    println!("setting is {:?}", setting_value);
+
+    let numbers = (2, 4, 6, 8, 10);
+    match numbers {
+        (first, _, third, _, fifth) => {
+            println!("Some numbers: {}, {}, {}", first, third, fifth);
+        },
+    }
+    match numbers {
+        (first, .., last) => println!("First and last numbers: {}, {}", first, last),
+    }
+
+    let num = Some(4);
+    match num {
+        Some(x) if x < 5 => println!("less than five: {}", x),
+        Some(x) => println!("{}", x),
+        None => (),
+    }
+
+    let msg = Msg::Hello { id: 5 };
+    match msg {
+        Msg::Hello { id: id_value @ 3..=7 } => {
+            println!("Found an id in range: {}", id_value);
+        },
+        Msg::Hello { id: 10..=12 } => {
+            println!("Found an id in another range");
+        },
+        Msg::Hello { id } => println!("Found some other id: {}", id),
+    }
+}
